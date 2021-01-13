@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Button} from 'react-native';
-import styled from 'styled-components/native';
+import styled from 'styled-components';
 
 const Page = styled.SafeAreaView`
     flex=1;
@@ -26,8 +26,7 @@ const PctArea = styled.View`
   flex-direction: row;
   margin: 20px;
 `;
-const PctItem = styled.Button`
-`;
+const PctItem = styled.Button``;
 const ResultArea = styled.View`
   width: 90%;
   margin-top: 30px;
@@ -57,7 +56,8 @@ export default () => {
 
   useEffect(() => {
     calc();
-  }, [pct]);
+    [pct];
+  });
 
   return (
     <Page>
