@@ -1,6 +1,5 @@
-import { ESLint } from 'eslint';
-import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Button} from 'react-native';
 import styled from 'styled-components/native';
 
 const Page = styled.SafeAreaView`
@@ -8,7 +7,7 @@ const Page = styled.SafeAreaView`
     align-items:center;    
 `;
 const HeaderText = styled.Text`
-    font-size: 25px;
+  font-size: 25px;
 `;
 const Input = styled.TextInput`
     width:90%;
@@ -19,24 +18,76 @@ const Input = styled.TextInput`
     border-radius:10px;
     padding:10px;
 `;
-
+const CalcButton = styled.Button`
+  margin-top: 10px;
+  font-size: 15px;
+`;
+const PctArea = styled.View`
+  flex-direction: row;
+  margin: 20px;
+`;
+const PctItem = styled.Button`
+`;
+const ResultArea = styled.View`
+  width: 90%;
+  margin-top: 30px;
+  background-color: #eee;
+  padding: 20px;
+  justify-content: center;
+  align-center: center;
+`;
+const ResultItemTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+`;
+const ResultItem = styled.Text`
+  font-size: 15px;
+`;
 export default () => {
-    const [bill, setBill] = useState('');
+  const [bill, setBill] = useState('');
+  const [tip, setTip] = useState(0);
+  const [pct, setPct] = useState(10);
 
-    const calc = () => {
+  const calc = () => {
+    let nBill = parseFloat(bill);
+    if (nBill > 0) {
+      setTip((pct / 100) * nBill);
+    }
+  };
 
-    };
-    return (
-        <Page>
-            <HeaderText>CALCULADORA DE GORGETA</HeaderText>
-            <Input
-                PlaceHolder="Quanto deu a conta?"
-                PlaceHolderTextcolor="#000"
-                KeyboardType="numeric"
-                Value={bill}
-                OnChangeText={(n) => setBill(n)}
-            />
-            <CalcButton title="Calcular" onPress={calc} />
-        </Page>
-    );
+  useEffect(() => {
+    calc();
+  }, [pct]);
+
+  return (
+    <Page>
+      <HeaderText>CALCULADORA DE GORGETA</HeaderText>
+      <Input
+        PlaceHolder="Quanto deu a conta?"
+        PlaceHolderTextcolor="#000"
+        KeyboardType="numeric"
+        Value={bill}
+        OnChangeText={(n) => setBill(n)}
+      />
+      <CalcButton title="Calcular" onPress={calc} />
+
+      <PctArea>
+        <PctItem title="5%" onPress={() => setPct(5)} />
+        <PctItem title="10%" onPress={() => setPct(10)} />
+        <PctItem title="15%" onPress={() => setPct(15)} />
+        <PctItem title="20%" onPress={() => setPct(20)} />
+      </PctArea>
+
+      {tip > 0 && (
+        <ResultArea>
+          <ResultItemTitle> Valor da Conta: </ResultItemTitle>
+          <ResultItem>R$ {parseFloat(bill).toFixed(2)} </ResultItem>
+          <ResultItemTitle> Valor da Gorgeta: </ResultItemTitle>
+          <ResultItem>R$ {tip.toFixed(2)} </ResultItem>
+          <ResultItemTitle> Valor Total: </ResultItemTitle>
+          <ResultItem>R$ {(parseFloat(bill) + tip).toFixed(2)} </ResultItem>
+        </ResultArea>
+      )}
+    </Page>
+  );
 };
