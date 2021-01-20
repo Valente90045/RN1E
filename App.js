@@ -56,19 +56,15 @@ export default () => {
     }
   };
 
-  useEffect(() => {
-    calc();
-  }, [ pct ]);
-
   return (
     <Page>
       <HeaderText>Calculadora de Gorjeta</HeaderText>
       <Input
-        PlaceHolder="Quanto deu a conta?"
-        PlaceHolderTextcolor="#000"
-        KeyboardType="numeric"
-        Value={bill}
-        OnChangeText={n => setBill(n) }
+        placeholder="Quanto deu a conta?"
+        placeholderTextColor="#000"
+        keyboardType="numeric"
+        value={bill}
+        onChangeText={(n) => setBill(n)}
       />
 
       <PctArea>
@@ -78,9 +74,9 @@ export default () => {
         <PctItem title="20%" onPress={() => setPct(20)} />
       </PctArea>
 
-      <CalcButton title="Calcular" onPress={calc} />
+      <CalcButton title={`Calcular ${pct}%`} onPress={calc} />
 
-      {tip > 0 &&
+      {tip > 0 && (
         <ResultArea>
           <ResultItemTitle> Valor da Conta: </ResultItemTitle>
           <ResultItem>R$ {parseFloat(bill).toFixed(2)} </ResultItem>
@@ -89,7 +85,7 @@ export default () => {
           <ResultItemTitle> Valor Total: </ResultItemTitle>
           <ResultItem>R$ {(parseFloat(bill) + tip).toFixed(2)} </ResultItem>
         </ResultArea>
-      }
+      )}
     </Page>
   );
 }
